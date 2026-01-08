@@ -1,4 +1,5 @@
 from environmental import Grass
+from GUI import Cell
 from library.random_tools import random_coords
 import random
 
@@ -12,25 +13,35 @@ class Game(arcade.Window):
 
     def setup(self):
         self.generate_map()
+        self.fast_cells = arcade.SpriteList()
+        for i in range(10):
+            self.fast_cells.append(Cell(97 + 128 * i, 97))
 
         self.background_color = arcade.color.TEA_GREEN
 
     def on_draw(self):
         self.clear()
 
-        self.grass_list.draw()
+        self.update_map()
+        self.fast_cells.draw()
+
+    def update_map(self):
+        for i in self.environment:
+            i.draw()
 
     def generate_map(self):
+        self.environment = []
         self.generate_grass()
 
     def generate_grass(self):
         self.grass_list = arcade.SpriteList()
         for _ in range(1):
             self.grass_list.append(Grass(*random_coords(self.map_borders)))
+        self.environment.append(self.grass_list)
 
 
 def main():
-    mw = Game(800, 600, "Каменный век")
+    mw = Game(1346, 800, "Каменный век")
     mw.setup()
     arcade.run()
 
