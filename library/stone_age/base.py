@@ -1,12 +1,14 @@
 from environmental import Grass
+from library.random_tools import random_coords
 import random
 
 import arcade
 
 
 class Game(arcade.Window):
-    def __init__(self, width, height, title):
+    def __init__(self, width, height, title, map_borders=[0, 600]):
         super().__init__(width, height, title, resizable=True)
+        self.map_borders = map_borders
 
     def setup(self):
         self.generate_map()
@@ -23,8 +25,8 @@ class Game(arcade.Window):
 
     def generate_grass(self):
         self.grass_list = arcade.SpriteList()
-        for _ in range(10):
-            self.grass_list.append(Grass(center_x=random.randint(0, self.width), center_y=random.randint(0, self.height)))
+        for _ in range(1):
+            self.grass_list.append(Grass(*random_coords(self.map_borders)))
 
 
 def main():
