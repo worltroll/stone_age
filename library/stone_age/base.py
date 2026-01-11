@@ -1,7 +1,6 @@
 from environmental import Grass
 from GUI import Cell
 from library.random_tools import random_coords
-import random
 
 import arcade
 
@@ -40,11 +39,7 @@ class Game(arcade.Window):
         self.environment.append(self.grass_list)
 
 
-def main():
+if __name__ == "__main__":
     mw = Game(1346, 800, "Каменный век")
     mw.setup()
     arcade.run()
-
-
-if __name__ == "__main__":
-    main()
