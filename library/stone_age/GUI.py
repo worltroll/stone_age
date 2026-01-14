@@ -10,3 +10,19 @@ class Cell(arcade.Sprite):
     def update(self):
         if self.is_selected:
             self.path_or_texture = '../../images/selected_cell.png'
+        else:
+            self.path_or_texture = '../../images/cell.png'
+
+
+class HotBar(arcade.SpriteList):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        self.selected_cell_id = 1
+        for i in range(10):
+            self.append(Cell(97 + 128 * i, 97))
+        self[self.selected_cell_id].is_selected = True
+
+    def update(self):
+        for i in self:
+            i.update()

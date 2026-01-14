@@ -1,5 +1,5 @@
 from environmental import Grass
-from GUI import Cell
+from GUI import HotBar
 from library.random_tools import random_coords
 
 import arcade
@@ -12,17 +12,15 @@ class Game(arcade.Window):
 
     def setup(self):
         self.generate_map()
-        self.fast_cells = arcade.SpriteList()
-        for i in range(10):
-            self.fast_cells.append(Cell(97 + 128 * i, 97))
-
+        self.hotbar = HotBar()
         self.background_color = arcade.color.TEA_GREEN
 
     def on_draw(self):
         self.clear()
 
         self.update_map()
-        self.fast_cells.draw()
+        self.hotbar.update()
+        self.hotbar.draw()
 
     def update_map(self):
         for i in self.environment:
