@@ -5,9 +5,9 @@ from library.random_tools import random_coords
 import arcade
 
 
-class Game(arcade.Window):
-    def __init__(self, width, height, title, map_borders=[0, 600]):
-        super().__init__(width, height, title, resizable=True)
+class Game(arcade.View):
+    def __init__(self, width, height, map_borders=[0, 600]):
+        super().__init__()
         self.map_borders = map_borders
 
     def setup(self):
@@ -26,8 +26,6 @@ class Game(arcade.Window):
 
     def on_draw(self):
         self.clear()
-
-        arcade.set_background_color(self.background_color)
 
         self.update_map()
         self.hotbar.update()
@@ -85,6 +83,8 @@ class Game(arcade.Window):
 
 
 if __name__ == "__main__":
-    mw = Game(1346, 834, "Каменный век")
-    mw.setup()
+    mw = Window(1346, 834, "Каменный век")
+    game = Game(1346, 834)
+    game.setup()
+    mw.show_view(game)
     arcade.run()
