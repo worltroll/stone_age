@@ -5,6 +5,11 @@ from library.random_tools import random_coords
 import arcade
 
 
+class Window(arcade.Window):
+    def __init__(self, width, height, title):
+        super().__init__(width, height, title, resizable=False)
+
+
 class Game(arcade.View):
     def __init__(self, width, height, map_borders=[0, 600]):
         super().__init__()
