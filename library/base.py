@@ -3,12 +3,27 @@ from arcade.gui import UIManager, UITextureButton, UITextArea, UILabel, UIStyleB
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
 from time import sleep
+class Tumbler(UITextureButton):
+    def __init__(self, x, y, width, height, texture_on, texture_off, is_active=False):
+        super().__init__(x=x, y=y, width=width, height=height, texture=texture_off)
+        self.texture_off = texture_off
+        self.texture_on = texture_on
+        self.is_active = is_active
+    def change_texture(self):
+        if self.is_active:
+            self.texture = self.texture_off
+            self.is_active = False
+        else:
+            self.texture = self.texture_on
+            self.is_active = True
+
+
 
 class Launcher(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title, resizable=True)
         self.sprite_list = arcade.SpriteList()
-        self.pages={'main':UIManager(), 'settings':UIManager(), 'license':UIManager()}
+        self.pages={'main':UIManager(), 'settings':UIManager(), 'license':UIManager(), 'settings_g':UIManager(), 'settings_a':UIManager(), 'settings_gm':UIManager()}
         self.page='main'
         #layouts settings
         #self.manager = UIManager()
@@ -16,7 +31,15 @@ class Launcher(arcade.Window):
         self.anchor_layout_left = UIAnchorLayout(x=-450, y=200)
         self.anchor_layout_main = UIAnchorLayout(y=-200)
         self.anchor_settings = UIAnchorLayout()
+        self.anchor_settings_g = UIAnchorLayout(x=300)
+        self.anchor_settings_g_text = UIAnchorLayout(x=500)
+        self.anchor_settings_a = UIAnchorLayout()
+        self.anchor_settings_gm = UIAnchorLayout()
         self.box_layout_settings = UIBoxLayout(vertical=True, spacing=30)
+        self.box_layout_settings_g = UIBoxLayout(vertical=True, spacing=30)
+        self.box_layout_settings_g_text = UIBoxLayout(vertical=True, spacing=30)
+        self.box_layout_settings_a = UIBoxLayout(vertical=True, spacing=30)
+        self.box_layout_settings_gm = UIBoxLayout(vertical=True, spacing=30)
         self.box_layout_main = UIBoxLayout(vertical=False, space_between=50)
         self.box_layout_left = UIBoxLayout(vertical=True, space_between=20)
         self.setup_widgets()
@@ -24,15 +47,19 @@ class Launcher(arcade.Window):
         self.anchor_layout_left.add(self.box_layout_left)
         self.anchor_layout_main.add(self.box_layout_main)
         self.anchor_settings.add(self.box_layout_settings)
+        self.anchor_settings_g.add(self.box_layout_settings_g)
+        self.anchor_settings_a.add(self.box_layout_settings_a)
+        self.anchor_settings_gm.add(self.box_layout_settings_gm)
         #Добавляю layout к менеджерам
 
         self.pages['main'].add(self.anchor_layout_main)
         self.pages['main'].add(self.anchor_layout_left)
         self.pages['settings'].add(self.anchor_settings)
-
+        self.pages['settings_g'].add(self.anchor_settings_g)
+        self.pages['settings_g'].add(self.anchor_settings_g_text)
+        self.pages['settings_a'].add(self.anchor_settings_a)
+        self.pages['settings_gm'].add(self.anchor_settings_gm)
         self.width, self.height = width, height
-
-
     def setup(self):
         self.background_color = arcade.color.TEA_GREEN
         self.texture = arcade.load_texture('../images/L_background.jpg')
@@ -46,15 +73,11 @@ class Launcher(arcade.Window):
         for sprite in self.sprite_list:
             sprite.remove_from_sprite_lists()
 
+    def change_page(self, page):
+        self.pages[self.page].disable()
+        self.page = page
+        self.pages[self.page].enable()
 
-    def settings(self):
-        self.pages[self.page].disable()
-        self.page='settings'
-        self.pages[self.page].enable()
-    def main_menu(self):
-        self.pages[self.page].disable()
-        self.page='main'
-        self.pages[self.page].enable()
 
     def setup_widgets(self):
         arcade.load_font('../fonts/OffBit-101.ttf')
@@ -92,6 +115,9 @@ class Launcher(arcade.Window):
         button_normal_texture = arcade.load_texture('../images/button.png')
         button_pressed_texture = arcade.load_texture('../images/button_pressed.png')
         button_hovered_texture = arcade.load_texture('../images/button_hovered.png')
+        tumbler_texture_on = arcade.load_texture('../images/tumbler_on.png')
+        tumbler_texture_off = arcade.load_texture('../images/tumbler_off.png')
+
         button_main1 = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,texture_hovered=button_hovered_texture, width=400, height=80, text='Начать игру', style=button_style)
 
         button_main2 = UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture, texture_pressed=button_pressed_texture, width=200,
@@ -109,7 +135,7 @@ class Launcher(arcade.Window):
         donation_button.on_click = lambda event: print("Вы задонатили 1рублей!!!")
         user_license_button.on_click = lambda event: print("NONE")
         mods_button.on_click = lambda event: print("NONE")
-        settings_button.on_click = lambda event: self.settings()
+        settings_button.on_click = lambda event: self.change_page('settings')
 
         self.box_layout_main.add(button_main1)
         self.box_layout_main.add(button_main2)
@@ -131,12 +157,30 @@ class Launcher(arcade.Window):
         s_menu_button = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,
                                              texture_hovered=button_hovered_texture,
                                              width=300, height=80, text='Главное меню', style=button_style)
-        s_menu_button.on_click= lambda event: self.main_menu()
+        s_menu_button.on_click= lambda event: self.change_page('main')
+        s_grafic_button.on_click= lambda event: self.change_page('settings_g')
+        s_audio_button.on_click = lambda event: self.change_page('settings_a')
+        s_gameplay_button.on_click = lambda event: self.change_page('settings_gm')
         self.box_layout_settings.add(s_grafic_button)
         self.box_layout_settings.add(s_audio_button)
         self.box_layout_settings.add(s_gameplay_button)
         self.box_layout_settings.add(s_menu_button)
+        #GRAFIC Settings
+        tumbler_1 = Tumbler(texture_off=tumbler_texture_off, width=150, height=40, texture_on=tumbler_texture_on, x=100, y=100)
+        tumbler_1.on_click = lambda event:tumbler_1.change_texture()
+        back_button = UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture,
+                                          texture_pressed=button_pressed_texture, width=300, height=80,
+                                          text='Назад', style=button_style, scale=1)
+        back_button.on_click = lambda event:self.change_page('settings')
+        self.box_layout_settings_g.add(tumbler_1)
+        self.box_layout_settings_g.add(back_button)
 
+        #AUDIO SETTINGS
+        self.box_layout_settings_a.add(back_button)
+
+
+        #GAME SETTINGS
+        self.box_layout_settings_gm.add(settings_button)
 
     def on_draw(self):
         self.clear()
