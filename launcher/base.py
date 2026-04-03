@@ -113,11 +113,11 @@ class Launcher(arcade.View):
         # MAIN MANAGER
         wortroll_label = UITextArea(text='Wortroll \n games', x=900, y=650, font_size=50, font_name='OffBit 101',
                                     text_color=arcade.color.RED, width=300, height=200)
-        button_normal_texture = arcade.load_texture('../images/button.png')
-        button_pressed_texture = arcade.load_texture('../images/button_pressed.png')
-        button_hovered_texture = arcade.load_texture('../images/button_hovered.png')
-        tumbler_texture_on = arcade.load_texture('../images/tumbler_on.png')
-        tumbler_texture_off = arcade.load_texture('../images/tumbler_off.png')
+        button_normal_texture = arcade.load_texture('images/button.png')
+        button_pressed_texture = arcade.load_texture('images/button_pressed.png')
+        button_hovered_texture = arcade.load_texture('images/button_hovered.png')
+        tumbler_texture_on = arcade.load_texture('images/tumbler_on.png')
+        tumbler_texture_off = arcade.load_texture('images/tumbler_off.png')
 
         button_main1 = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,
                                        texture_hovered=button_hovered_texture, width=400, height=80, text='Начать игру',
