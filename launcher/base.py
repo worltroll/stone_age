@@ -146,7 +146,6 @@ class Launcher(arcade.View):
         donation_button.on_click = lambda event: print("Вы задонатили 1рублей!!!")
         user_license_button.on_click = lambda event: print("NONE")
         mods_button.on_click = lambda event: print("NONE")
-
         settings_button.on_click = lambda event: self.change_page('settings')
 
         self.box_layout_main.add(button_main1)
@@ -226,6 +225,12 @@ def command():
 """
 
 
+def main():
+    mw = Launcher(1255, 857)
+
+    mw.setup()
+    arcade.run()
 
 
-
+if __name__ == "__main__":
+    main()
