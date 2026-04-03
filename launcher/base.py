@@ -62,7 +62,7 @@ class Launcher(arcade.View):
         self.pages['settings_g'].add(self.anchor_settings_g_text)
         self.pages['settings_a'].add(self.anchor_settings_a)
         self.pages['settings_gm'].add(self.anchor_settings_gm)
-        self.width, self.height = width, height
+
 
     def setup(self):
         self.background_color = arcade.color.TEA_GREEN
@@ -146,6 +146,7 @@ class Launcher(arcade.View):
         donation_button.on_click = lambda event: print("Вы задонатили 1рублей!!!")
         user_license_button.on_click = lambda event: print("NONE")
         mods_button.on_click = lambda event: print("NONE")
+
         settings_button.on_click = lambda event: self.change_page('settings')
 
         self.box_layout_main.add(button_main1)
@@ -225,12 +226,6 @@ def command():
 """
 
 
-def main():
-    mw = Launcher(1255, 857)
-
-    mw.setup()
-    arcade.run()
 
 
-if __name__ == "__main__":
-    main()
+
