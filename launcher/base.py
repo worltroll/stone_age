@@ -62,7 +62,6 @@ class Launcher(arcade.View):
         self.pages['settings_g'].add(self.anchor_settings_g_text)
         self.pages['settings_a'].add(self.anchor_settings_a)
         self.pages['settings_gm'].add(self.anchor_settings_gm)
-        self.width, self.height = width, height
 
     def setup(self):
         self.background_color = arcade.color.TEA_GREEN

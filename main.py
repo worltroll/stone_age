@@ -17,6 +17,7 @@ def main():
 
     launcher = Launcher(1255, 857)
     launcher.setup()
+
     mw.show_view(launcher)
     arcade.run()
 
