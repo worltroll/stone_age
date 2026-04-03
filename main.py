@@ -2,6 +2,7 @@ import arcade
 
 from launcher.base import Launcher
 from game.base import Game
+from game_start_menu.base import Game_Start
 
 
 class Window(arcade.Window):
@@ -14,10 +15,11 @@ def main():
 
     game = Game(1346, 834)
     game.setup()
-
+    gs = Game_Start()
+    gs.setup()
     launcher = Launcher(1255, 857)
     launcher.setup()
-    mw.show_view(launcher)
+    mw.show_view(gs)
     arcade.run()
 
 
