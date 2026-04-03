@@ -1,16 +1,15 @@
 import arcade
 
-from library.objects import mw
-from library.base import Launcher
-from library.stone_age.base import Game
+from launcher.base import Launcher
+from game.base import Game
 
 
 
 def main():
-    launcher = Launcher()
+    launcher = Launcher(1255, 857)
     launcher.setup()
 
-    game = Game()
+    game = Game(1346, 834)
     game.setup()
 
     window = arcade.Window(1255, 857, "Stone Age")

@@ -1,6 +1,6 @@
-from environmental import Grass
-from GUI import HotBar, Inventory
-from library.random_tools import random_coords
+from game.environmental import Grass
+from game.GUI import HotBar, Inventory
+from launcher.random_tools import random_coords
 
 import arcade
 

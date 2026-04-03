@@ -13,9 +13,9 @@ class HotBar(arcade.SpriteList):
         super().__init__(**kwargs)
 
         for i in range(10):
-            self.append(Cell('../../images/cell.png', 97 + 128 * i, 97))
+            self.append(Cell('../images/cell.png', 97 + 128 * i, 97))
         self.selected_cell_id = 0
-        self.append(Cell('../../images/selected_cell.png', 97 + 128 * self.selected_cell_id, 97))
+        self.append(Cell('../images/selected_cell.png', 97 + 128 * self.selected_cell_id, 97))
         self.select(0)
 
     def select(self, cell_id):
@@ -31,4 +31,4 @@ class Inventory(arcade.SpriteList):
 
         for i in range(4):
             for j in range(7):
-                self.append(Cell('../../images/cell.png', 97 + 128 * j, 97 + 128 * (i + 2)))
+                self.append(Cell('../images/cell.png', 97 + 128 * j, 97 + 128 * (i + 2)))

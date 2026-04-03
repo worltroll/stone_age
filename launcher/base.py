@@ -3,12 +3,15 @@ from arcade.gui import UIManager, UITextureButton, UITextArea, UILabel, UIStyleB
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
 from time import sleep
+
+
 class Tumbler(UITextureButton):
     def __init__(self, x, y, width, height, texture_on, texture_off, is_active=False):
         super().__init__(x=x, y=y, width=width, height=height, texture=texture_off)
         self.texture_off = texture_off
         self.texture_on = texture_on
         self.is_active = is_active
+
     def change_texture(self):
         if self.is_active:
             self.texture = self.texture_off
@@ -18,15 +21,15 @@ class Tumbler(UITextureButton):
             self.is_active = True
 
 
-
 class Launcher(arcade.View):
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title, resizable=True)
+    def __init__(self, width, height):
+        super().__init__(width, height)
         self.sprite_list = arcade.SpriteList()
-        self.pages={'main':UIManager(), 'settings':UIManager(), 'license':UIManager(), 'settings_g':UIManager(), 'settings_a':UIManager(), 'settings_gm':UIManager()}
-        self.page='main'
-        #layouts settings
-        #self.manager = UIManager()
+        self.pages = {'main': UIManager(), 'settings': UIManager(), 'license': UIManager(), 'settings_g': UIManager(),
+                      'settings_a': UIManager(), 'settings_gm': UIManager()}
+        self.page = 'main'
+        # layouts settings
+        # self.manager = UIManager()
         self.pages[self.page].enable()
         self.anchor_layout_left = UIAnchorLayout(x=-450, y=200)
         self.anchor_layout_main = UIAnchorLayout(y=-200)
@@ -50,7 +53,7 @@ class Launcher(arcade.View):
         self.anchor_settings_g.add(self.box_layout_settings_g)
         self.anchor_settings_a.add(self.box_layout_settings_a)
         self.anchor_settings_gm.add(self.box_layout_settings_gm)
-        #Добавляю layout к менеджерам
+        # Добавляю layout к менеджерам
 
         self.pages['main'].add(self.anchor_layout_main)
         self.pages['main'].add(self.anchor_layout_left)
@@ -60,14 +63,13 @@ class Launcher(arcade.View):
         self.pages['settings_a'].add(self.anchor_settings_a)
         self.pages['settings_gm'].add(self.anchor_settings_gm)
         self.width, self.height = width, height
+
     def setup(self):
         self.background_color = arcade.color.TEA_GREEN
         self.texture = arcade.load_texture('../images/L_background.jpg')
 
-
     def add_sprite(self, sprite):
         self.sprite_list.append(sprite)
-
 
     def clear_sprites(self):
         for sprite in self.sprite_list:
@@ -78,16 +80,14 @@ class Launcher(arcade.View):
         self.page = page
         self.pages[self.page].enable()
 
-
     def setup_widgets(self):
         arcade.load_font('../fonts/OffBit-101.ttf')
-        #button style setting with UIStyle
+        # button style setting with UIStyle
         button_style = {
             'normal': UITextureButton.UIStyle(
                 font_size=20,
                 font_name=('OffBit 101'),
                 font_color=arcade.color.BLACK
-
 
             ),
             'hover': UITextureButton.UIStyle(
@@ -110,27 +110,38 @@ class Launcher(arcade.View):
             )
         }
 
-        #MAIN MANAGER
-        wortroll_label = UITextArea(text='Wortroll \n games', x=900, y=650, font_size=50,font_name='OffBit 101', text_color=arcade.color.RED, width=300, height=200)
+        # MAIN MANAGER
+        wortroll_label = UITextArea(text='Wortroll \n games', x=900, y=650, font_size=50, font_name='OffBit 101',
+                                    text_color=arcade.color.RED, width=300, height=200)
         button_normal_texture = arcade.load_texture('../images/button.png')
         button_pressed_texture = arcade.load_texture('../images/button_pressed.png')
         button_hovered_texture = arcade.load_texture('../images/button_hovered.png')
         tumbler_texture_on = arcade.load_texture('../images/tumbler_on.png')
         tumbler_texture_off = arcade.load_texture('../images/tumbler_off.png')
 
-        button_main1 = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,texture_hovered=button_hovered_texture, width=400, height=80, text='Начать игру', style=button_style)
+        button_main1 = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,
+                                       texture_hovered=button_hovered_texture, width=400, height=80, text='Начать игру',
+                                       style=button_style)
 
-        button_main2 = UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture, texture_pressed=button_pressed_texture, width=200,
+        button_main2 = UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture,
+                                       texture_pressed=button_pressed_texture, width=200,
                                        height=80, text='Закрыть', style=button_style)
 
-        settings_button = UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture, texture_pressed=button_pressed_texture, width=300, height=80, text='Настройки', style=button_style)
-        donation_button = UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture, texture_pressed=button_pressed_texture,
-                                 width=300, height=80, text='Поддержать авторов', style=button_style)
-        user_license_button = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,texture_hovered=button_hovered_texture,
-                                 width=300, height=80, text='Соглашение пользователя', style=button_style)
-        mods_button = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,texture_hovered=button_hovered_texture,
-                                 width=300, height=80, text='Пользовательский контент', style=button_style)
-        button_main1.on_click = lambda event:self.add_sprite(arcade.Sprite(path_or_texture='../images/block.png', center_x=600, center_y=500, scale=10)) if len(self.sprite_list) ==0 else None
+        settings_button = UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture,
+                                          texture_pressed=button_pressed_texture, width=300, height=80,
+                                          text='Настройки', style=button_style)
+        donation_button = UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture,
+                                          texture_pressed=button_pressed_texture,
+                                          width=300, height=80, text='Поддержать авторов', style=button_style)
+        user_license_button = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,
+                                              texture_hovered=button_hovered_texture,
+                                              width=300, height=80, text='Соглашение пользователя', style=button_style)
+        mods_button = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,
+                                      texture_hovered=button_hovered_texture,
+                                      width=300, height=80, text='Пользовательский контент', style=button_style)
+        button_main1.on_click = lambda event: self.add_sprite(
+            arcade.Sprite(path_or_texture='../images/block.png', center_x=600, center_y=500, scale=10)) if len(
+            self.sprite_list) == 0 else None
         button_main2.on_click = lambda event: self.clear_sprites()
         donation_button.on_click = lambda event: print("Вы задонатили 1рублей!!!")
         user_license_button.on_click = lambda event: print("NONE")
@@ -145,54 +156,53 @@ class Launcher(arcade.View):
         self.box_layout_left.add(donation_button)
         self.box_layout_left.add(user_license_button)
         self.box_layout_left.add(mods_button)
-        #SETTINGS MANAGER
-        s_grafic_button= UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,texture_hovered=button_hovered_texture,
-                                 width=300, height=80, text='Настройки графики', style=button_style)
+        # SETTINGS MANAGER
+        s_grafic_button = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,
+                                          texture_hovered=button_hovered_texture,
+                                          width=300, height=80, text='Настройки графики', style=button_style)
         s_audio_button = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,
-                                    texture_hovered=button_hovered_texture,
-                                    width=300, height=80, text='Настройки аудио', style=button_style)
+                                         texture_hovered=button_hovered_texture,
+                                         width=300, height=80, text='Настройки аудио', style=button_style)
         s_gameplay_button = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,
-                                    texture_hovered=button_hovered_texture,
-                                    width=300, height=80, text='Игровой процесс', style=button_style)
+                                            texture_hovered=button_hovered_texture,
+                                            width=300, height=80, text='Игровой процесс', style=button_style)
         s_menu_button = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,
-                                             texture_hovered=button_hovered_texture,
-                                             width=300, height=80, text='Главное меню', style=button_style)
-        s_menu_button.on_click= lambda event: self.change_page('main')
-        s_grafic_button.on_click= lambda event: self.change_page('settings_g')
+                                        texture_hovered=button_hovered_texture,
+                                        width=300, height=80, text='Главное меню', style=button_style)
+        s_menu_button.on_click = lambda event: self.change_page('main')
+        s_grafic_button.on_click = lambda event: self.change_page('settings_g')
         s_audio_button.on_click = lambda event: self.change_page('settings_a')
         s_gameplay_button.on_click = lambda event: self.change_page('settings_gm')
         self.box_layout_settings.add(s_grafic_button)
         self.box_layout_settings.add(s_audio_button)
         self.box_layout_settings.add(s_gameplay_button)
         self.box_layout_settings.add(s_menu_button)
-        #GRAFIC Settings
-        tumbler_1 = Tumbler(texture_off=tumbler_texture_off, width=150, height=40, texture_on=tumbler_texture_on, x=100, y=100)
-        tumbler_1.on_click = lambda event:tumbler_1.change_texture()
+        # GRAFIC Settings
+        tumbler_1 = Tumbler(texture_off=tumbler_texture_off, width=150, height=40, texture_on=tumbler_texture_on, x=100,
+                            y=100)
+        tumbler_1.on_click = lambda event: tumbler_1.change_texture()
         back_button = UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture,
-                                          texture_pressed=button_pressed_texture, width=300, height=80,
-                                          text='Назад', style=button_style, scale=1)
-        back_button.on_click = lambda event:self.change_page('settings')
+                                      texture_pressed=button_pressed_texture, width=300, height=80,
+                                      text='Назад', style=button_style, scale=1)
+        back_button.on_click = lambda event: self.change_page('settings')
         self.box_layout_settings_g.add(tumbler_1)
         self.box_layout_settings_g.add(back_button)
 
-        #AUDIO SETTINGS
+        # AUDIO SETTINGS
         self.box_layout_settings_a.add(back_button)
 
-
-        #GAME SETTINGS
+        # GAME SETTINGS
         self.box_layout_settings_gm.add(settings_button)
 
     def on_draw(self):
         self.clear()
-        arcade.draw_texture_rect(self.texture, arcade.rect.XYWH(self.width // 2, self.height // 2, self.width, self.height))
+        arcade.draw_texture_rect(self.texture,
+                                 arcade.rect.XYWH(self.width // 2, self.height // 2, self.width, self.height))
         self.sprite_list.draw()
         self.pages[self.page].draw()
 
-
     def on_mouse_press(self, x, y, button, modifiers):
         pass
-
-
 
 
 """class Button(arcade.Sprite):
@@ -221,7 +231,6 @@ def main():
     mw.setup()
     arcade.run()
 
+
 if __name__ == "__main__":
     main()
-
-
