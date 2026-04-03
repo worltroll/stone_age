@@ -19,7 +19,7 @@ class Tumbler(UITextureButton):
 
 
 
-class Launcher(arcade.Window):
+class Launcher(arcade.View):
     def __init__(self, width, height, title):
         super().__init__(width, height, title, resizable=True)
         self.sprite_list = arcade.SpriteList()
