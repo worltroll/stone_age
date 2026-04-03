@@ -23,7 +23,7 @@ class Tumbler(UITextureButton):
 
 class Launcher(arcade.View):
     def __init__(self, width, height):
-        super().__init__(width, height)
+        super().__init__()
         self.sprite_list = arcade.SpriteList()
         self.pages = {'main': UIManager(), 'settings': UIManager(), 'license': UIManager(), 'settings_g': UIManager(),
                       'settings_a': UIManager(), 'settings_gm': UIManager()}
@@ -66,7 +66,7 @@ class Launcher(arcade.View):
 
     def setup(self):
         self.background_color = arcade.color.TEA_GREEN
-        self.texture = arcade.load_texture('../images/L_background.jpg')
+        self.texture = arcade.load_texture('images/L_background.jpg')
 
     def add_sprite(self, sprite):
         self.sprite_list.append(sprite)
@@ -81,7 +81,7 @@ class Launcher(arcade.View):
         self.pages[self.page].enable()
 
     def setup_widgets(self):
-        arcade.load_font('../fonts/OffBit-101.ttf')
+        arcade.load_font('fonts/OffBit-101.ttf')
         # button style setting with UIStyle
         button_style = {
             'normal': UITextureButton.UIStyle(
@@ -226,7 +226,7 @@ def command():
 
 
 def main():
-    mw = Launcher(1255, 857, "Лаунчер")
+    mw = Launcher(1255, 857)
 
     mw.setup()
     arcade.run()

@@ -4,17 +4,20 @@ from launcher.base import Launcher
 from game.base import Game
 
 
+class Window(arcade.Window):
+    def __init__(self, width, height, title):
+        super().__init__(width, height, title, resizable=False)
+
 
 def main():
-    launcher = Launcher(1255, 857)
-    launcher.setup()
+    mw = Window(1346, 834, "Каменный век")
 
     game = Game(1346, 834)
     game.setup()
 
-    window = arcade.Window(1255, 857, "Stone Age")
-    window.show_view(launcher)
-
+    launcher = Launcher(1255, 857)
+    launcher.setup()
+    mw.show_view(launcher)
     arcade.run()
 
 
