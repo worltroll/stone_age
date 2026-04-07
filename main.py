@@ -19,7 +19,7 @@ def main():
     gs.setup()
     launcher = Launcher(1255, 857)
     launcher.setup()
-    mw.show_view(gs)
+    mw.show_view(game)
     arcade.run()
 
 

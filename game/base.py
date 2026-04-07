@@ -1,7 +1,7 @@
 from game.environmental import Grass
 from game.GUI import HotBar, Inventory
 from launcher.random_tools import random_coords
-
+from arcade.experimental import Shadertoy
 import arcade
 
 
@@ -13,8 +13,26 @@ class Window(arcade.Window):
 class Game(arcade.View):
     def __init__(self, width, height, map_borders=[0, 600]):
         super().__init__()
-        self.map_borders = map_borders
 
+        self.map_borders = map_borders
+        """self.shadertoy = None
+        self.channel0 = None
+        self.channel1 = None
+        self.load_shader()"""
+        #Guide https://api.arcade.academy/en/latest/tutorials/raycasting/index.html
+    def load_shader(self):
+        window_size = (1346, 834)
+        self.shadertoy = Shadertoy.create_from_file(window_size, "shaders/shader_test.glsl")
+        self.channel0 = self.shadertoy.ctx.framebuffer(
+            color_attachments=[self.shadertoy.ctx.texture(window_size, components=4)]
+        )
+        self.channel1 = self.shadertoy.ctx.framebuffer(
+            color_attachments=[self.shadertoy.ctx.texture(window_size, components=4)]
+        )
+
+
+        self.shadertoy.channel_0 = self.channel0.color_attachments[0]
+        self.shadertoy.channel_1 = self.channel1.color_attachments[0]
     def setup(self):
         self.generate_map()
         self.hotbar = HotBar()
@@ -30,12 +48,19 @@ class Game(arcade.View):
         self.right_flag = False
 
     def on_draw(self):
+        """self.channel0.use()
+        self.channel0.clear()
+        self.channel1.use()
+        self.channel1.clear(color=arcade.color.AMAZON)"""
         self.clear()
+        """
+        self.shadertoy.program['lightPosition'] = (300, 300)
+        self.shadertoy.program['lightSize'] = 300"""
 
         self.update_map()
         self.hotbar.update()
         self.hotbar.draw()
-
+        #self.shadertoy.render()
         if self.inventory_flag:
             self.inventory.draw()
 

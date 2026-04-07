@@ -2,7 +2,7 @@ import arcade
 from arcade.gui import UIManager, UITextureButton, UITextArea, UILabel, UIStyleBase
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 
-from time import sleep
+
 
 
 class Tumbler(UITextureButton):
