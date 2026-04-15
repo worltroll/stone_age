@@ -1,7 +1,7 @@
 import arcade
 from arcade.gui import UIManager, UITextureButton, UITextArea, UILabel, UIStyleBase
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
-
+from game_start_menu.base import Game_Start
 
 
 
@@ -25,6 +25,7 @@ class Launcher(arcade.View):
     def __init__(self, width, height):
         super().__init__()
         self.sprite_list = arcade.SpriteList()
+
         self.pages = {'main': UIManager(), 'settings': UIManager(), 'license': UIManager(), 'settings_g': UIManager(),
                       'settings_a': UIManager(), 'settings_gm': UIManager()}
         self.page = 'main'
@@ -79,7 +80,8 @@ class Launcher(arcade.View):
         self.pages[self.page].disable()
         self.page = page
         self.pages[self.page].enable()
-
+    def start_button(self):
+        self.window.show_view(self.game_start_view)
     def setup_widgets(self):
         arcade.load_font('fonts/OffBit-101.ttf')
         # button style setting with UIStyle
@@ -139,10 +141,8 @@ class Launcher(arcade.View):
         mods_button = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,
                                       texture_hovered=button_hovered_texture,
                                       width=300, height=80, text='Пользовательский контент', style=button_style)
-        button_main1.on_click = lambda event: self.add_sprite(
-            arcade.Sprite(path_or_texture='../images/block.png', center_x=600, center_y=500, scale=10)) if len(
-            self.sprite_list) == 0 else None
-        button_main2.on_click = lambda event: self.clear_sprites()
+        button_main1.on_click = lambda event: self.start_button()
+        button_main2.on_click = lambda event: arcade.exit()
         donation_button.on_click = lambda event: print("Вы задонатили 1рублей!!!")
         user_license_button.on_click = lambda event: print("NONE")
         mods_button.on_click = lambda event: print("NONE")

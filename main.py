@@ -12,11 +12,11 @@ class Window(arcade.Window):
 
 def main():
     mw = Window(1346, 834, "Каменный век")
-
+    
     game = Game(1346, 834)
     gs = Game_Start()
     launcher = Launcher(1255, 857)
-
+    launcher.game_start_view = gs
     game.launcher_view = launcher
     game.setup()
     gs.setup()
