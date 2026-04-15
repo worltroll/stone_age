@@ -19,7 +19,8 @@ class Game(arcade.View):
         self.channel0 = None
         self.channel1 = None
         self.load_shader()"""
-        #Guide https://api.arcade.academy/en/latest/tutorials/raycasting/index.html
+        # Guide https://api.arcade.academy/en/latest/tutorials/raycasting/index.html
+
     def load_shader(self):
         window_size = (1346, 834)
         self.shadertoy = Shadertoy.create_from_file(window_size, "shaders/shader_test.glsl")
@@ -30,9 +31,6 @@ class Game(arcade.View):
             color_attachments=[self.shadertoy.ctx.texture(window_size, components=4)]
         )
 
-
-        self.shadertoy.channel_0 = self.channel0.color_attachments[0]
-        self.shadertoy.channel_1 = self.channel1.color_attachments[0]
     def setup(self):
         self.generate_map()
         self.hotbar = HotBar()
@@ -57,12 +55,27 @@ class Game(arcade.View):
         self.shadertoy.program['lightPosition'] = (300, 300)
         self.shadertoy.program['lightSize'] = 300"""
 
-        self.update_map()
-        self.hotbar.update()
+        for i in self.environment:
+            i.draw()
+
         self.hotbar.draw()
-        #self.shadertoy.render()
+        # self.shadertoy.render()
         if self.inventory_flag:
             self.inventory.draw()
+
+    def update(self):
+        if not self.inventory_flag:
+            if self.up_flag:
+                pass
+            if self.left_flag:
+                pass
+            if self.down_flag:
+                pass
+            if self.right_flag:
+                pass
+
+        self.update_map()
+        self.hotbar.update()
 
     def on_key_press(self, symbol, modifiers):
         match symbol:
