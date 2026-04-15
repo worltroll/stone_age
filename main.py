@@ -14,11 +14,14 @@ def main():
     mw = Window(1346, 834, "Каменный век")
 
     game = Game(1346, 834)
-    game.setup()
     gs = Game_Start()
-    gs.setup()
     launcher = Launcher(1255, 857)
+
+    game.launcher_view = launcher
+    game.setup()
+    gs.setup()
     launcher.setup()
+
     mw.show_view(game)
     arcade.run()
 
