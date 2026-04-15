@@ -66,7 +66,7 @@ class Launcher(arcade.View):
 
     def setup(self):
         self.background_color = arcade.color.TEA_GREEN
-        self.texture = arcade.load_texture('images/L_background.jpg')
+        self.texture = arcade.load_texture('images/background.png')
 
     def add_sprite(self, sprite):
         self.sprite_list.append(sprite)
