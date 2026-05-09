@@ -1,5 +1,6 @@
 import arcade
-from arcade.gui import UIManager, UITextureButton, UITextArea, UILabel, UIStyleBase
+import os
+from arcade.gui import UIManager, UITextureButton, UITextArea, UILabel, UIStyleBase, UIInputText
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 import json
 class Game_Start(arcade.View):
@@ -8,7 +9,10 @@ class Game_Start(arcade.View):
         self.pages = {'main': UIManager(), 'multiplayer': UIManager(), 'local': UIManager(), 'new_world_menu': UIManager(), 'saves': UIManager()}
         self.sprite_list = arcade.SpriteList()
         self.page = 'main'
-        self.world_list = []
+        path = 'saves'
+        world_files = os.listdir(path)
+        self.world_list = [f[:-5] for f in world_files if os.path.isfile(os.path.join(path, f))]
+
         self.pages[self.page].enable()
         self.anchor_layout_main = UIAnchorLayout(y=350)
         self.anchor_layout_local = UIAnchorLayout(y=0)
@@ -17,7 +21,7 @@ class Game_Start(arcade.View):
         self.anchor_layout_new_world2 = UIAnchorLayout(y=-200)
         self.anchor_layout_saves = UIAnchorLayout(y=0)
 
-        self.box_layout_saves = UIBoxLayout(vertical=True, space_between=100)
+        self.box_layout_saves = UIBoxLayout(vertical=True, space_between=50)
         self.box_layout_new_world1 = UIBoxLayout(vertical=False, space_between=100)
         self.box_layout_main = UIBoxLayout(vertical=False, space_between=100)
         self.box_layout_local = UIBoxLayout(vertical=True, space_between=50)
@@ -55,19 +59,33 @@ class Game_Start(arcade.View):
         self.page = page
         self.pages[self.page].enable()
     def new_world(self, world_name):
-        data = {
-            "fast_cells":[],
-            "settings":{},
-            "world_name":world_name
-        }
-        nw = open(f'saves/{world_name}.json', 'w')
-        json.dump(data, nw)
-        self.world_list.append(world_name)
-        nw.close()
+        if len(self.world_list) <5:
+
+            data = {
+                "fast_cells":[],
+                "settings":{},
+                "world_name":world_name
+            }
+            with open(f'saves/{world_name}.json', 'w') as nw:
+                json.dump(data, nw)
+                self.world_list.insert(0, world_name)
+                nw.close()
+        else:
+            print('У вас уже 5 миров пожалуйста удалите лишние')
+
+
 
 
     def open_world(self, world_name):
         pass
+    def saves_update(self):
+        for i in range(len(self.world_list)):
+            self.buttons_world[i].text = self.world_list[i]
+
+
+            self.box_layout_saves.add(self.buttons_world[i])
+
+
     def setup_widgets(self):
         arcade.load_font('fonts/OffBit-101.ttf')
         button_normal_texture = arcade.load_texture('images/button.png')
@@ -101,6 +119,14 @@ class Game_Start(arcade.View):
 
             )
         }
+        input_style = {
+            'normal': UIInputText.UIStyle(
+                bg=(0, 0, 0, 0),
+                border=(255, 0, 255, 0),
+                border_width=3
+            )
+        }
+
         button_multiplayer = UITextureButton(texture=button_normal_texture, texture_pressed=button_pressed_texture,
                                        texture_hovered=button_hovered_texture, width=300, height=80, text='Сетевая игра',
                                        style=button_style)
@@ -127,20 +153,34 @@ class Game_Start(arcade.View):
                                            texture_pressed=button_pressed_texture, width=300,
                                            height=80, text='Сохранения', style=button_style)
 
+        self.buttons_world = [UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture,
+                                           texture_pressed=button_pressed_texture, width=300,
+                                           height=80, style=button_style), UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture,
+                                           texture_pressed=button_pressed_texture, width=300,
+                                           height=80, style=button_style), UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture,
+                                           texture_pressed=button_pressed_texture, width=300,
+                                           height=80, style=button_style), UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture,
+                                           texture_pressed=button_pressed_texture, width=300,
+                                           height=80, style=button_style), UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture,
+                                           texture_pressed=button_pressed_texture, width=300,
+                                           height=80, style=button_style)]
+        self.saves_update()
+        input_text  =UIInputText(color=arcade.color.DARK_BLUE_GRAY,text_color=arcade.color.BLACK, border_color=arcade.color.BLACK,border_width=3,
+            font_size=24,
+            text='Test world', width=400, height=80)
+
+
         button_multiplayer.on_click = lambda event: self.change_page('multiplayer')
         button_local.on_click = lambda event: self.change_page('local')
         button_menu.on_click = lambda event: self.change_page('main')
         button_exit.on_click = lambda event: arcade.exit()
         button_new_world.on_click = lambda event: self.change_page('new_world_menu')
         button_back.on_click = lambda event: self.change_page('local')
-        button_create.on_click = lambda event: self.new_world('test')
+        button_create.on_click = lambda event: (self.new_world(input_text.text), self.saves_update())
         button_saves.on_click = lambda event: self.change_page('saves')
-        for i in self.world_list:
-            button_world = UITextureButton(texture=button_normal_texture, texture_hovered=button_hovered_texture,
-                                           texture_pressed=button_pressed_texture, width=300,
-                                           height=80, text=f'Мир {i}', style=button_style)
-            button_world.on_click = lambda event: self.open_world(i)
-            self.box_layout_saves.add(button_world)
+
+
+
         self.box_layout_main.add(button_multiplayer)
         self.box_layout_main.add(button_local)
         self.box_layout_main.add(button_exit)
@@ -150,7 +190,7 @@ class Game_Start(arcade.View):
         self.box_layout_local.add(button_saves)
         self.box_layout_local.add(button_menu)
 
-
+        self.box_layout_new_world1.add(input_text)
         self.box_layout_new_world2.add(button_back)
         self.box_layout_new_world2.add(button_create)
 

@@ -225,12 +225,6 @@ def command():
 """
 
 
-def main():
-    mw = Launcher(1255, 857)
-
-    mw.setup()
-    arcade.run()
 
 
-if __name__ == "__main__":
-    main()
+

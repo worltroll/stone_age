@@ -22,7 +22,7 @@ def main():
     gs.setup()
     launcher.setup()
 
-    mw.show_view(launcher)
+    mw.show_view(gs)
     arcade.run()
 
 
